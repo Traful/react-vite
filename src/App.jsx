@@ -66,7 +66,16 @@ const App = () => {
 			<SWRConfig
 				value={{
 					refreshInterval: 0,
-					fetcher: fetchWithToken(context.state.user.token)
+					fetcher: fetchWithToken(context.state.user.token),
+					onError: (error, key) => {
+						console.log(key, error);
+						/*
+						if(error.status !== 403 && error.status !== 404) {
+							// Podemos enviar el error a Sentry
+							// o mostrarlo una notificación UI.
+						}
+						*/
+					}
 				}}
 			>
 				<RouterProvider router={router} />
