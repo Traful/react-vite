@@ -5,7 +5,7 @@ const Landing = () => {
 	//https://play.tailwindcss.com/uflBHLO1wg
 	return(
 		<div className="Landing">
-			<div className="relative bg-slate-100">
+			<div className="relative">
 				<div className="absolute left-0 top-0 w-full">
 					<div className="flex justify-around items-center py-8">
 						<Logo />

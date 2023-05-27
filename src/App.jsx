@@ -18,18 +18,27 @@ const fetchWithToken = (token) => {
 			}
 		};
 
-		const res = await fetch(api_url, init);
- 
-		// Si el status code no esta en el rango 200-299
-		if(!res.ok) {
-			const error = new Error('Ocurrió un error al obtener los datos.')
-			// Adjunta información extra al objeto de error.
-			error.info = await res.json();
-			error.status = res.status;
-			throw error;
+		try {
+			const res = await fetch(api_url, init);
+			// Si el status code no esta en el rango 200-299
+			if(!res.ok) {
+				/*
+				const error = new Error("Ocurrió un error al procesar la petición.")
+				// Adjunta información extra al objeto de error.
+				error.info = await res.json();
+				error.status = res.status;
+				throw error;
+				*/
+				return await res.json();
+			}
+			return res.json();
+		} catch(e) {
+			return ({
+				ok: false,
+				msg: `${e.name}: ${e.message}`,
+				data: null
+			});
 		}
-		
-		return res.json();
 	};
 };
 

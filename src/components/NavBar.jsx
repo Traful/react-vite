@@ -4,7 +4,7 @@ const NavBar = () => {
 	const [visible, setVisible] =  useState(false);
 
 	return(       
-		<nav className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+		<nav className="-mx-[1em] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
 			<div className="text-white xl:w-9/12 md:w-full mx-auto p-4">
 				<div className="flex justify-between">
 					<div className="flex items-center space-x-4">
