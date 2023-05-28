@@ -10,7 +10,7 @@ const useForm = (defaultData) => {
 		setData(prev => ({ ...prev, [name]: value }));
 	}
 
-	return [data, handleChange];
+	return [data, handleChange, setData];
 };
 
 export default useForm;

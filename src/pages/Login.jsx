@@ -1,47 +1,34 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Context from "./../store/Context";
 import useForm from "../components/custom/useForm";
 import { SET_USER_DATA } from "./../store/constants";
 import { Link } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
+import { apiCallWithToken } from "./../api/fetchers";
 import Logo from "../components/Logo";
 import Spinner from "../components/utils/Spinner";
-
-const apiCallWithToken = (token = null, method = "POST") => {
-	return async (url, { arg }) => {
-		const api_url = `${import.meta.env.VITE_API_URL}${url}`;
-		const init = {
-			method: method,
-			body: JSON.stringify(arg),
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": token
-			}
-		};
-
-		try {
-			const res = await fetch(api_url, init);
-			// Si el status code no esta en el rango 200-299
-			if(!res.ok) {
-				return await res.json();
-			}
-			return res.json();
-		} catch(e) {
-			return ({
-				ok: false,
-				msg: `${e.name}: ${e.message}`,
-				data: null
-			});
-		}
-	}
-};
+import { ToastContainer, toast } from "react-toastify";
+import useLocalStorage from "../components/custom/useLocalStorage";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
 	const context = useContext(Context);
-	const [datos, onCambios] = useForm({
-		email: "hansjal@gmail.com",
-		password: "quilmes"
+	const [getValue, setValue, removeKey] = useLocalStorage(null);
+	const [datos, onCambios, setData] = useForm({
+		email: "",
+		password: ""
 	});
+	const [remember, setRemember] = useState(false);
+
+	useEffect(() => {
+		if(getValue("rv-email")) {
+			setRemember(true);
+			setData({
+				email: getValue("rv-email"),
+				password: getValue("rv-password")
+			});
+		}
+	}, []);
 
 	/*
 		data: data for the given key returned from fetcher
@@ -68,8 +55,15 @@ const Login = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const result = await trigger(datos, /* options */) //Options sobreescribe las opciones de useSWRMutation onSuccess, onError, etc
+		const result = await trigger(datos, /* options */); //Options sobreescribe las opciones de useSWRMutation onSuccess, onError, etc
 		if(result.ok) {
+			if(!remember) {
+				removeKey("rv-email");
+				removeKey("rv-password");
+			} else {
+				setValue("rv-email", datos.email);
+				setValue("rv-password", datos.password);
+			}
 			context.dispatch({
 				type: SET_USER_DATA,
 				payload: {
@@ -81,7 +75,9 @@ const Login = () => {
 				}
 			});
 		} else {
-			alert(result.msg);
+			//alert(result.msg);
+			toast.error(result.msg);
+			result.errres?.map((e) => toast.info(e));
 		}
 	};
 
@@ -101,19 +97,28 @@ const Login = () => {
 						<label htmlFor="password">Contraseña</label>
 						<input type="password" name="password" id="password" value={datos.password} onChange={onCambios} autoComplete="off" />
 					</div>
-					<div className={`flex ${isMutating ? "justify-center" : "justify-around"} items-center mt-12`}>
+					<div className="flex justify-between items-center p-2 mt-4">
+						<div>
+							<input type="checkbox" name="remember" id="remember" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> <label htmlFor="remember">Recordar mi cuenta.</label>
+						</div>
+						<div>
+							<Link to="/recover" className="underline text-blue-600">Olvidé mi contraseña.</Link>
+						</div>
+					</div>
+					<div className={`flex ${isMutating ? "justify-center" : "justify-around"} items-center gap-2 mt-4`}>
 						{
 							isMutating ?
 							<Spinner />
 							:
 							<>
-								<Link to="/" className="btn">Cancelar</Link>
-								<button className="btn" type="submit">Ingresar</button>
+								<Link to="/" className="btn w-full text-center">Cancelar</Link>
+								<button className="btn w-full" type="submit">Ingresar</button>
 							</>
 						}
 					</div>
 				</form>
 			</div>
+			<ToastContainer autoClose={3000} />
 		</div>
 	);
 };
