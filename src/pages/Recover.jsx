@@ -6,6 +6,7 @@ import { apiCallWithToken } from "./../api/fetchers";
 import Logo from "../components/Logo";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "../components/utils/Spinner";
+import Msg from "../components/utils/Msg";
 import "react-toastify/dist/ReactToastify.css";
 
 const Recover = () => {
@@ -30,43 +31,35 @@ const Recover = () => {
 		}
 	};
 
+	if(sended) return <Msg url="/"><p>Hemos enviado un link de recuperación a <strong>{email}</strong>, por favor revise la correspondencia y siga las instrucciones.</p></Msg>
+
 	return(
-		<div className="w-full min-h-screen flex justify-center items-center">
+		<div className="w-full min-h-screen flex justify-center items-center p-4">
 			<div className="w-full max-w-[400px] mx-auto flex flex-col">
 				<div className="mb-4">
 					<Logo />
 				</div>
 				<hr />
-				{
-					sended ?
-					<div>
-						<p className="mb-4">Hemos enviado un link de recuperación a <strong>{email}</strong>, por favor revise la correspondencia y siga las instrucciones.</p>
-						<div className="flex justify-end">
-							<Link to="/" className="btn">Regresar</Link>
+				<div>
+					<p className="mt-4 mb-2 text-sm text-justify">Para recuperar su contraseña por favor indique la dirección de correo eletrónico con la cual registro su cuenta.</p>
+					<form onSubmit={handleSubmit}>
+						<div className="field">
+							<label htmlFor="email">Email</label>
+							<input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />
 						</div>
-					</div>
-					:
-					<div>
-						<p className="mt-4 mb-2 text-sm text-justify">Para recuperar su contraseña por favor indique la dirección de correo eletrónico con la cual registro su cuenta.</p>
-						<form onSubmit={handleSubmit}>
-							<div className="field">
-								<label htmlFor="email">Email</label>
-								<input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />
-							</div>
-							<div className={`flex ${isMutating ? "justify-center" : "justify-around"} items-center gap-2 mt-4`}>
-								{
-									isMutating ?
-									<Spinner />
-									:
-									<>
-										<Link to="/" className="btn w-full text-center">Cancelar</Link>
-										<button className="btn w-full" type="submit">Enviar</button>
-									</>
-								}
-							</div>
-						</form>
-					</div>
-				}
+						<div className={`flex ${isMutating ? "justify-center" : "justify-around"} items-center gap-2 mt-4`}>
+							{
+								isMutating ?
+								<Spinner />
+								:
+								<>
+									<Link to="/" className="btn w-full text-center">Cancelar</Link>
+									<button className="btn w-full" type="submit">Enviar</button>
+								</>
+							}
+						</div>
+					</form>
+				</div>
 			</div>
 			<ToastContainer autoClose={3000} />
 		</div>

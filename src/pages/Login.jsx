@@ -66,13 +66,7 @@ const Login = () => {
 			}
 			context.dispatch({
 				type: SET_USER_DATA,
-				payload: {
-					id: 1,
-					email: "",
-					firstname: "",
-					lastname: "",
-					jwt: ""
-				}
+				payload: result.data
 			});
 		} else {
 			//alert(result.msg);
@@ -82,7 +76,7 @@ const Login = () => {
 	};
 
 	return(
-		<div className="w-full min-h-screen flex justify-center items-center">
+		<div className="w-full min-h-screen flex justify-center items-center p-4">
 			<div className="w-full max-w-[400px] mx-auto flex flex-col">
 				<div className="mb-4">
 					<Logo />

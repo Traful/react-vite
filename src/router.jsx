@@ -4,11 +4,16 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Validreg from "./pages/Validreg";
+import Register from "./pages/Register"; //Solicitud de registro
+import Validreg from "./pages/Validreg"; //Validación del registro
+
 import Recover from "./pages/Recover"; //Solicitud para recuprar la contraseña
+import Changepass from "./pages/Changepass"; //Cambio de contraseña (link mail)
 
 import Dashboard from "./pages/Dashboard";
+import Perfil from "./pages/Perfil";
+
+import Notfound from "./pages/Notfound";
 
 const Redirected =  ({ children }) => {
 	const context = useContext(Context);
@@ -33,7 +38,23 @@ const router = createBrowserRouter([
 	{ path: "/register/token/:id", element: <Redirected><Validreg /></Redirected> },
 
 	{ path: "/recover", element: <Redirected><Recover /></Redirected> },
-	{ path: "/dashboard", element: <Protected><Dashboard /></Protected> }
+	{ path: "/recover/token/:id", element: <Redirected><Changepass /></Redirected> },
+	{
+		path: "/dashboard",
+		element: <Protected><Dashboard /></Protected>,
+		children: [
+			{
+				index: true,
+				element: <Perfil />
+			},
+			{
+				index: true,
+				path: "perfil",
+				element: <Perfil />
+			},
+		],
+	 },
+	{ path: "*", element: <Notfound /> }
 ]);
 
 export default router;

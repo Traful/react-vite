@@ -29,10 +29,6 @@ html {
 	background-color: var(--bg-color);
 }
 
-#root {
-	padding: 0 1em;
-}
-
 #ojo_derecho {
 	transform: translate(2px, -1px);
 	/* animation: ojo_anim 3s alternate 18s  infinite ease-in-out; */

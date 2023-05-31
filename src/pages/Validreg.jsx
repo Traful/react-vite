@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import PreData from  "./../components/utils/PreData";
+import Msg from "../components/utils/Msg";
 
 const Validreg = () => {
 	const { id: token } = useParams();
@@ -11,10 +11,24 @@ const Validreg = () => {
 	if(!data) return <div>S/Datos</div>
 
 	return(
-		<div className="Validreg">
-			<h1>Validar Registro {token}</h1>
-			<PreData jsonData={data} />
-		</div>
+		<>
+			{
+				data.ok ?
+				<Msg url="/">
+					<>
+						<h2 className="text-2xl mb-2">Se ha completado el proceso de registros!</h2>
+						<p>Bienvenido a <strong>Sheep Shit!</strong></p>
+					</>
+				</Msg>
+				:
+				<Msg url="/">
+					<>
+						<h2 className="text-2xl mb-2">Ups!</h2>
+						<p>{data.msg}</p>
+					</>
+				</Msg>
+			}
+		</>
 	);
 };
 
