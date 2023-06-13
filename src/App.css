@@ -50,3 +50,60 @@ html {
 	}
 	
 }
+
+.ava-sheep {
+	background-image: url(./../public/ava-sheep.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.w-body {
+	position: relative;
+	min-height: 400px;
+	padding: 1em 2em;
+}
+
+.w-body-img {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-image: url(./../public/bg-WhatsApp.jpg);
+	background-repeat: repeat;
+	opacity: 0.1;
+}
+
+.w-body-msgs {
+	padding: 1em;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	overflow-y: scroll;
+}
+
+/* Scoll Bar de Dolly */
+
+.dolly-scroll::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+.dolly-scroll::-webkit-scrollbar
+{
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+.dolly-scroll::-webkit-scrollbar-thumb
+{
+  background-color: #d9d9d9;
+}
+
+.per-menu:hover .per-menu-links {
+	display: block;
+}

@@ -11,6 +11,8 @@ import Recover from "./pages/Recover"; //Solicitud para recuprar la contraseña
 import Changepass from "./pages/Changepass"; //Cambio de contraseña (link mail)
 
 import Dashboard from "./pages/Dashboard";
+import Dolly from "./pages/Dolly";
+import About from "./pages/About";
 import Perfil from "./pages/Perfil";
 
 import Notfound from "./pages/Notfound";
@@ -36,24 +38,17 @@ const router = createBrowserRouter([
 	{ path: "/login", element: <Redirected><Login /></Redirected> },
 	{ path: "/register", element: <Redirected><Register /></Redirected> },
 	{ path: "/register/token/:id", element: <Redirected><Validreg /></Redirected> },
-
 	{ path: "/recover", element: <Redirected><Recover /></Redirected> },
 	{ path: "/recover/token/:id", element: <Redirected><Changepass /></Redirected> },
 	{
 		path: "/dashboard",
 		element: <Protected><Dashboard /></Protected>,
 		children: [
-			{
-				index: true,
-				element: <Perfil />
-			},
-			{
-				index: true,
-				path: "perfil",
-				element: <Perfil />
-			},
-		],
-	 },
+			{ index: true, element: <Dolly /> },
+			{ path: "about", element: <About /> },
+			{ path: "perfil", element: <Perfil /> }
+		]
+	},
 	{ path: "*", element: <Notfound /> }
 ]);
 

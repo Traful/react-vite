@@ -1,17 +1,19 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import Context from "./../store/Context";
+import { SET_DEFAULT } from "./../store/constants";
+import { Link } from "react-router-dom";
+import useLocalStorage from "./custom/useLocalStorage";
 
 const NavBar = () => {
+	const context = useContext(Context);
 	const nav = useRef(0);
-	//const btn = useRef();
 	const [visible, setVisible] =  useState(false);
+	const [getValue, setValue, removeKey] = useLocalStorage();
 
 	useEffect(() => {
 		const xFuncion = (event) => {
-			console.log(nav.current);
 			if(nav.current) {
-				//if(!nav.current.contains(event.target) && event.target !== openButton) {
 				if(!nav.current.contains(event.target)) {
-					// Si es así, cerrar la barra de navegación
 					setVisible(false);
 				}
 			}
@@ -21,6 +23,11 @@ const NavBar = () => {
 			document.removeEventListener("click", xFuncion);
 		};
 	}, []);
+
+	const handleCloseSession = () => {
+		removeKey("rv-jwt");
+		context.dispatch({ type: SET_DEFAULT });
+	};
 
 	return(   
 		<div ref={nav} className="relative">
@@ -32,22 +39,34 @@ const NavBar = () => {
 					<div className="text-2xl">Sheep Shit</div>
 				</div>
 				<div className="hidden justify-end space-x-3 md:flex">
-					<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 1</a>
-					<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 2</a>
-					<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 3</a>
+					<Link to="/dashboard" className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Dolly</Link>
+					<Link to="/dashboard/about" className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">About</Link>
 				</div>
-				<div className="my-4 hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-purple-700 p-2 cursor-pointer">HA</div>
+				<div className="per-menu relative">
+					<span className="my-4 hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-purple-700 p-2 cursor-pointer">HA</span>
+					<div className="per-menu-links hidden absolute -left-28 top-12 bg-white z-20 w-32 p-2 rounded-md">
+						<Link to="/dashboard/perfil"><div className="text-gray-400 mb-2 hover:text-black">Perfil</div></Link>
+						<hr />
+						<div className="text-gray-400 mt-2 hover:text-black cursor-pointer" onClick={handleCloseSession}>Cerrar Sesión</div>
+					</div>
+				</div>
 				<div className="btn-menu cursor-pointer md:hidden" onClick={() => setVisible(prev => !prev)}>
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 					</svg>
 				</div>
 			</nav>
-			<div className={`absolute left-0 top-[56px] w-full ${visible ? "flex" : "hidden"} flex-col items-center justify-center space-y-2 bg-slate-800 text-white md:hidden`}>
-				<div className="my-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-700 p-2 cursor-pointer">HA</div>
-				<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 1</a>
-				<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 2</a>
-				<a className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Menu 3</a>
+			<div className={`absolute left-0 top-[56px] w-full ${visible ? "flex" : "hidden"} flex-col items-center justify-center space-y-2 bg-slate-800 text-white md:hidden z-10`}>
+				<div className="per-menu relative">
+					<span className="my-4 hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-purple-700 p-2 cursor-pointer">HA</span>
+					<div className="per-menu-links hidden absolute -left-16 top-14 bg-white z-20 w-32 p-2 rounded-md">
+						<Link to="/dashboard/perfil"><div className="text-gray-400 mb-2 hover:text-black">Perfil</div></Link>
+						<hr />
+						<div className="text-gray-400 mt-2 hover:text-black cursor-pointer" onClick={handleCloseSession}>Cerrar Sesión</div>
+					</div>
+				</div>
+				<Link to="/dashboard" className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">Dolly</Link>
+				<Link to="/dashboard/about" className="p-2 font-semibold uppercase text-slate-500 hover:text-white" href="#">About</Link>
 			</div>
 		</div>
 	);

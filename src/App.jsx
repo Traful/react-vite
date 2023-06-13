@@ -14,7 +14,7 @@ const App = () => {
 			<SWRConfig
 				value={{
 					refreshInterval: 0,
-					fetcher: fetchWithToken(context.state.user.token),
+					fetcher: fetchWithToken(context.state.user.jwt),
 					onError: (error, key) => {
 						console.log(key, error);
 						/*

@@ -64,6 +64,7 @@ const Login = () => {
 				setValue("rv-email", datos.email);
 				setValue("rv-password", datos.password);
 			}
+			setValue("rv-jwt", result.data.jwt);
 			context.dispatch({
 				type: SET_USER_DATA,
 				payload: result.data
